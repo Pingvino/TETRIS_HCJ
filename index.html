@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>테트리스</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="game">
+            <div class="game-text">
+                <span>TETRIS</span>
+                <button>Start</button>
+            </div>
+            <div class="playground">
+                <table></table>
+            </div>
+        </div>
+        <div class="info hidden">
+            <div class="score">점수 : 0</div>
+            <div class="next">
+                <span>Next Block</span>
+                <table></table>
+            </div>
+            <div class="instruction">
+                <div>⬅➡⬇ : 이동<br>⬆ : 회전<br>Space : 바로 내리기</div>
+                <br>
+                <div>⬅➡⬇ 스와이프 : 이동<br>⬆ 스와이프 : 회전<br>두번 터치 : 바로 내리기</div>
+            </div>
+        </div>
+    </div>
+    <div id="templog"></div>
+</body>
+<script src="js/script.js" type="module"></script>
+</html>

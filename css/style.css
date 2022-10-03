@@ -1,0 +1,126 @@
+
+.playground table { 
+    border-collapse: collapse;
+    border:2px solid black;
+    margin: 0 auto;
+}
+.playground td
+{
+    width: 25px;
+    height: 25px;
+    border: 1px solid rgb(231, 231, 231);
+    padding: 0px;
+}
+
+.next table { 
+    border-collapse: collapse;
+    /* border:2px solid black; */
+    margin: 0 auto;
+}
+.next td
+{
+    width: 25px;
+    height: 25px;
+    border: 1px solid white;
+    padding: 0px;
+}
+
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+body
+{
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.score
+{
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 2rem;
+}
+
+.I
+{
+    background-color: darkturquoise;
+}
+
+.O
+{
+    background-color: gold;
+}
+
+.T
+{
+    background-color: blueviolet;
+}
+
+.S
+{
+    background-color: mediumseagreen;
+}
+
+.Z
+{
+    background-color: tomato;
+}
+
+.J
+{
+    background-color: cornflowerblue;
+}
+
+.L
+{
+    background-color: orange;
+}
+
+.game-text
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background :rgba(0, 0, 0, 0.7);
+    left : 0;
+    top : 0;
+    color: #fff;
+    font-size: 50px;
+    text-align: center;
+}
+
+.game-text > button
+{
+    padding: 0.5rem 1rem;
+    color: #fff;
+    background: salmon;
+    border:none;
+    cursor: pointer;
+}
+
+.hidden
+{
+    display: none;
+}
+
+.wrapper
+{
+    display: flex;
+    flex-direction: row;
+}
+
+.info
+{
+    text-align: center;
+
+}
