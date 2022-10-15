@@ -12,12 +12,12 @@
     padding: 0px;
 }
 
-.next table { 
+.mini table { 
     border-collapse: collapse;
-    /* border:2px solid black; */
+    border:2px solid black;
     margin: 0 auto;
 }
-.next td
+.mini td
 {
     width: 25px;
     height: 25px;

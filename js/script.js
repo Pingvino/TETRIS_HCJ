@@ -8,7 +8,7 @@ const info = document.querySelector(".info");
 const gameText = document.querySelector(".game-text");
 const startButton = document.querySelector(".game-text > button");
 const textArea = document.querySelector(".game-text > span");
-const tempLog = document.querySelector("#templog");
+const holdview = document.querySelector(".hold > table");
 
 // CONSTATNS
 const GAME_ROWS = 20;
@@ -33,6 +33,7 @@ let startY;
 let deltaX;
 let deltaY;
 let clockTouch = null;
+let holdCount = 0;
 
 const movingItem = {
   type: "L",
@@ -42,6 +43,12 @@ const movingItem = {
 };
 const nextItem = {
   type: "L",
+  direction: 0,
+  top: 0,
+  left: 0,
+};
+const holdItem = {
+  type: undefined,
   direction: 0,
   top: 0,
   left: 0,
@@ -63,6 +70,7 @@ function init() {
   }
   for (let i = 0; i < PREVIEW_ROWS; i++) {
     prependNewLinePreview();
+    prependNewLineHold();
   }
   // renderBlocks();
   const nextIndex = Math.floor(Math.random() * block_types.length);
@@ -88,6 +96,14 @@ function prependNewLinePreview() {
   }
   preview.prepend(tr);
 }
+function prependNewLineHold() {
+  const tr = document.createElement("tr");
+  for (let j = 0; j < PREVIEW_COLS; j++) {
+    const matrix = document.createElement("td");
+    tr.prepend(matrix);
+  }
+  holdview.prepend(tr);
+}
 
 function renderPreview() {
   const { type, direction, top, left } = nextItem;
@@ -108,6 +124,28 @@ function renderPreview() {
     } else {
     }
   });
+}
+
+function renderHold() {
+  const { type, direction, top, left } = holdItem;
+  const holdBlocks = document.querySelectorAll(".held");
+  holdBlocks.forEach((item) => {
+    // console.log(item);
+    item.className = "";
+  });
+  if (type !== undefined) {
+    BLOCKS[type][direction].some((block) => {
+      const x = block[0] + left;
+      const y = block[1] + top;
+      const target = holdview.childNodes[y]
+        ? holdview.childNodes[y].childNodes[x]
+        : null;
+      if (isEmpty(target)) {
+        target.classList.add(type, "held");
+      } else {
+      }
+    });
+  }
 }
 
 function renderBlocks(moveType = "") {
@@ -148,6 +186,7 @@ function renderBlocks(moveType = "") {
 }
 
 function seizeBlock() {
+  holdCount = 0;
   const movingBlocks = document.querySelectorAll(".moving");
   movingBlocks.forEach((item) => {
     // console.log(item);
@@ -180,20 +219,24 @@ function checkMatch() {
   generateNewBlock();
 }
 
-function generateNewBlock() {
+function generateNewBlock(newType) {
   clearInterval(downInterval);
   downInterval = setInterval(() => {
     moveBlock("top", 1);
   }, duration);
 
-  const type = nextItemType;
-  const nextIndex = Math.floor(Math.random() * block_types.length);
-  nextItemType = block_types[nextIndex];
-  movingItem.type = type;
-  nextItem.type = nextItemType;
-  block_types.splice(nextIndex, 1);
-  if (block_types.length === 0) {
-    block_types = [...BLOCK_BAGS];
+  if (newType !== undefined) {
+    const type = newType;
+  } else {
+    const type = nextItemType;
+    const nextIndex = Math.floor(Math.random() * block_types.length);
+    nextItemType = block_types[nextIndex];
+    movingItem.type = type;
+    nextItem.type = nextItemType;
+    block_types.splice(nextIndex, 1);
+    if (block_types.length === 0) {
+      block_types = [...BLOCK_BAGS];
+    }
   }
   // console.log(block_types);
 
@@ -202,7 +245,34 @@ function generateNewBlock() {
   movingItem.direction = 0;
   tempMovingItem = { ...movingItem };
   renderPreview();
+  renderHold();
   renderBlocks();
+}
+
+function hold() {
+  if (holdCount === 0) {
+    clearInterval(downInterval);
+    downInterval = setInterval(() => {
+      moveBlock("top", 1);
+    }, duration);
+    const { type, direction, top, left } = tempMovingItem;
+    const movingBlocks = document.querySelectorAll(".moving");
+    movingBlocks.forEach((item) => {
+      // console.log(item);
+      item.classList.remove(type, "moving");
+    });
+
+    const newType = holdItem.type;
+    holdItem.type = movingItem.type;
+    if (newType === undefined) {
+      generateNewBlock();
+    } else {
+      movingItem.type = newType;
+      // console.log(newType);
+      generateNewBlock(newType);
+    }
+    holdCount++;
+  }
 }
 
 function isEmpty(target) {
@@ -272,6 +342,10 @@ document.addEventListener("keydown", (e) => {
       hardDrop();
       break;
 
+    case "ShiftLeft":
+      hold();
+      break;
+
     default:
       break;
   }
@@ -332,3 +406,4 @@ document.addEventListener("touchstart", handlerTouch.start);
 document.addEventListener("touchend", handlerTouch.end);
 document.addEventListener("touchmove", handlerTouch.move);
 startButton.addEventListener("click", init);
+holdview.addEventListener("click", hold);
