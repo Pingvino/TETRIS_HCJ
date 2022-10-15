@@ -14,7 +14,7 @@
 
 .mini table { 
     border-collapse: collapse;
-    border:2px solid black;
+    /*border:2px solid black;*/
     margin: 0 auto;
 }
 .mini td
