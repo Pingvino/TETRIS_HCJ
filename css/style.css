@@ -12,6 +12,11 @@
     padding: 0px;
 }
 
+.mini
+{
+    font-weight: bold;
+    font-size: larger;
+}
 .mini table { 
     border-collapse: collapse;
     /*border:2px solid black;*/
@@ -128,5 +133,5 @@ body
 .info
 {
     text-align: center;
-
+    
 }

@@ -10,7 +10,7 @@ const gameText = document.querySelector(".game-text");
 const startButton = document.querySelector(".game-text > button");
 const textArea = document.querySelector(".game-text > span");
 const holdView = document.querySelector(".hold > table");
-const holdArea = document.querySelector(".hold");
+const holdArea = document.querySelector(".hold > span");
 
 // CONSTATNS
 const GAME_ROWS = 20;
