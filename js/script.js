@@ -4,7 +4,7 @@ import BLOCKS from "./blocks.js";
 const playground = document.querySelector(".playground > table");
 const preview = document.querySelector(".next > table");
 const score_Board = document.querySelector(".score");
-const hiscore_Local_Board = document.querySelector(".localhiscore");
+const hiscore_Local_Board = document.querySelector(".localhi");
 const info = document.querySelector(".info");
 const gameText = document.querySelector(".game-text");
 const startButton = document.querySelector(".game-text > button");
@@ -22,7 +22,7 @@ const SWIPE_IGNORE = 10;
 const DTOUCH_DURATION = 200;
 const BLOCK_BAGS = ["I", "O", "T", "S", "Z", "J", "L"];
 const SCORE_TEXT = "점수";
-const HISCORE_LOCAL_TEXT = "여기서 최고 점수";
+const HISCORE_LOCAL_TEXT = "기기 최고 점수";
 const HISCORE_GLOBAL_TEXT = "서버 최고 점수";
 const KEY_HISCORE_LOCAL = "HIGHSCORE_LOCAL";
 const KEY_HISCORE_GLOBAL = "HIGHSCORE_GLOBAL";
@@ -31,7 +31,7 @@ const KEY_HISCORE_GLOBAL = "HIGHSCORE_GLOBAL";
 let score = 0;
 let hiscore_local = 0;
 let hiscore_global = 0;
-let duration = 5000;
+let duration = 500;
 let downInterval;
 let tempMovingItem;
 let nextItemType;
@@ -90,7 +90,7 @@ function init() {
   generateNewBlock();
   if (localStorage.getItem(KEY_HISCORE_LOCAL) !== null) {
     hiscore_local = localStorage.getItem(KEY_HISCORE_LOCAL);
-    hiscore_Local_Board.innerText = `${HISCORE_LOCAL_TEXT} : ${hiscore_local}`;
+    hiscore_Local_Board.innerHTML = `${HISCORE_LOCAL_TEXT}<br>${hiscore_local}`;
   }
 }
 
@@ -227,7 +227,7 @@ function checkMatch() {
       row.remove();
       prependNewLine();
       score++;
-      score_Board.innerText = `${SCORE_TEXT} : ${score}`;
+      score_Board.innerHTML = `${SCORE_TEXT}<br>${score}`;
     }
   });
 
