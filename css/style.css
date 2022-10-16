@@ -12,10 +12,13 @@
     padding: 0px;
 }
 
-.mini
+.mini span
 {
     font-weight: bold;
     font-size: larger;
+    background-color: lightblue;
+    padding-left:15px;
+    padding-right:15px;
 }
 .mini table { 
     border-collapse: collapse;
@@ -28,6 +31,11 @@
     height: 25px;
     border: 1px solid white;
     padding: 0px;
+}
+.hold span
+{
+    padding-left:40px;
+    padding-right:40px;
 }
 
 *
