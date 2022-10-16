@@ -3,12 +3,14 @@ import BLOCKS from "./blocks.js";
 // DOM
 const playground = document.querySelector(".playground > table");
 const preview = document.querySelector(".next > table");
-const scoreBoard = document.querySelector(".score");
+const score_Board = document.querySelector(".score");
+const hiscore_Local_Board = document.querySelector(".localhiscore");
 const info = document.querySelector(".info");
 const gameText = document.querySelector(".game-text");
 const startButton = document.querySelector(".game-text > button");
 const textArea = document.querySelector(".game-text > span");
-const holdview = document.querySelector(".hold > table");
+const holdView = document.querySelector(".hold > table");
+const holdArea = document.querySelector(".hold");
 
 // CONSTATNS
 const GAME_ROWS = 20;
@@ -20,10 +22,16 @@ const SWIPE_IGNORE = 10;
 const DTOUCH_DURATION = 200;
 const BLOCK_BAGS = ["I", "O", "T", "S", "Z", "J", "L"];
 const SCORE_TEXT = "점수";
+const HISCORE_LOCAL_TEXT = "여기서 최고 점수";
+const HISCORE_GLOBAL_TEXT = "서버 최고 점수";
+const KEY_HISCORE_LOCAL = "HIGHSCORE_LOCAL";
+const KEY_HISCORE_GLOBAL = "HIGHSCORE_GLOBAL";
 
 // VARIABLES
 let score = 0;
-let duration = 500;
+let hiscore_local = 0;
+let hiscore_global = 0;
+let duration = 5000;
 let downInterval;
 let tempMovingItem;
 let nextItemType;
@@ -64,6 +72,8 @@ function init() {
   gameText.classList.add("hidden");
   info.classList.remove("hidden");
   playground.innerHTML = "";
+  preview.innerHTML = "";
+  holdView.innerHTML = "";
   tempMovingItem = { ...movingItem };
   for (let i = 0; i < GAME_ROWS; i++) {
     prependNewLine();
@@ -76,7 +86,12 @@ function init() {
   const nextIndex = Math.floor(Math.random() * block_types.length);
   nextItemType = block_types[nextIndex];
   block_types.splice(nextIndex, 1);
+  holdItem.type = undefined;
   generateNewBlock();
+  if (localStorage.getItem(KEY_HISCORE_LOCAL) !== null) {
+    hiscore_local = localStorage.getItem(KEY_HISCORE_LOCAL);
+    hiscore_Local_Board.innerText = `${HISCORE_LOCAL_TEXT} : ${hiscore_local}`;
+  }
 }
 
 function prependNewLine() {
@@ -102,7 +117,7 @@ function prependNewLineHold() {
     const matrix = document.createElement("td");
     tr.prepend(matrix);
   }
-  holdview.prepend(tr);
+  holdView.prepend(tr);
 }
 
 function renderPreview() {
@@ -137,8 +152,8 @@ function renderHold() {
     BLOCKS[type][direction].some((block) => {
       const x = block[0] + left;
       const y = block[1] + top;
-      const target = holdview.childNodes[y]
-        ? holdview.childNodes[y].childNodes[x]
+      const target = holdView.childNodes[y]
+        ? holdView.childNodes[y].childNodes[x]
         : null;
       if (isEmpty(target)) {
         target.classList.add(type, "held");
@@ -212,7 +227,7 @@ function checkMatch() {
       row.remove();
       prependNewLine();
       score++;
-      scoreBoard.innerText = `${SCORE_TEXT} : ${score}`;
+      score_Board.innerText = `${SCORE_TEXT} : ${score}`;
     }
   });
 
@@ -309,9 +324,13 @@ function hardDrop() {
 }
 
 function showGameOverText() {
-  textArea.innerHTML = `GAME OVER!<br>${SCORE_TEXT} : ${score}`;
+  textArea.innerHTML = `GAME OVER!<br>${SCORE_TEXT} : ${score}<br>${HISCORE_LOCAL_TEXT} : ${hiscore_local}`;
   startButton.innerText = "Retry";
   gameText.classList.remove("hidden");
+  if (score > parseInt(hiscore_local)) {
+    textArea.innerHTML = `GAME OVER!<br>최고 점수!<br>${SCORE_TEXT} : ${score}<br>${HISCORE_LOCAL_TEXT} : ${hiscore_local}`;
+    localStorage.setItem(KEY_HISCORE_LOCAL, score);
+  }
 }
 
 //event handling
@@ -406,4 +425,4 @@ document.addEventListener("touchstart", handlerTouch.start);
 document.addEventListener("touchend", handlerTouch.end);
 document.addEventListener("touchmove", handlerTouch.move);
 startButton.addEventListener("click", init);
-holdview.addEventListener("click", hold);
+holdArea.addEventListener("click", hold);
